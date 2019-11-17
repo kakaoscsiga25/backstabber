@@ -17,6 +17,7 @@ file(GLOB backstabber_headers
     )
 
 ADD_LIBRARY(core STATIC
+    src/deck.cpp
     src/game_controll.cpp
     src/player.cpp
     src/turn_controll.cpp

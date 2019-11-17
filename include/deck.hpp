@@ -9,6 +9,10 @@
 
 class Deck
 {
+protected:
+    Deck(); // init
+    ~Deck();
+
 public:
     static Deck* getDeck()
     {
@@ -16,34 +20,14 @@ public:
         return &deck;
     }
 
-    Card_door* pullDoorCard()
-    {
-        if (door_deck.empty())
-        {
-            reshuffleDoorCards(); // try reshuffle
-            if (door_deck.empty())
-                return nullptr;
-        }
-        Card_door* card = door_deck.back();
-        door_deck.pop_back();
-        return card;
-    }
-
+    Card_door* pullDoorCard();
     Card_treasure* pullTreasureCard();
 
+    void discard(Card_base* card);
+
 protected:
-    void reshuffleDoorCards()
-    {
-        door_deck.insert(door_deck.end(), door_deck_used.begin(), door_deck_used.end());
-        door_deck_used.clear();
-        std::random_shuffle(door_deck.begin(), door_deck.end());
-    }
-    void reshuffleTreasureCards()
-    {
-        treasure_deck.insert(treasure_deck.end(), treasure_deck_used.begin(), treasure_deck_used.end());
-        treasure_deck_used.clear();
-        std::random_shuffle(treasure_deck.begin(), treasure_deck.end());
-    }
+    void reshuffleDoorCards();
+    void reshuffleTreasureCards();
 
     std::vector<Card_door*> door_deck;
     std::vector<Card_door*> door_deck_used;

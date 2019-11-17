@@ -3,7 +3,7 @@
 
 #include "card_base.h"
 
-struct Card_treasure : Card_base
+struct Card_treasure : public Card_base
 {
 
 };

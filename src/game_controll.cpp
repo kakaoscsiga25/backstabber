@@ -1,14 +1,15 @@
 #include "game_controll.hpp"
 #include "turn_controll.hpp"
 #include "logger.h"
+#include "deck.hpp"
 
 #include <assert.h>
 
 
 GameControll::GameControll(int numberOfPlayers)
 {
-    for (size_t i = 0; i < numberOfPlayers; i++)
-        players.push_back(Player());
+    for (int i = 0; i < numberOfPlayers; i++)
+        players.push_back(Player(std::to_string(i+1))); // init players
     Logger::getLogger()->log(LogType::INFO, std::to_string(players.size()) + " player are initialized");
 }
 

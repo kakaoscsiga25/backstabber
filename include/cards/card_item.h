@@ -3,6 +3,7 @@
 
 struct Card_item
 {
+    virtual ~Card_item() {}
 
 };
 
