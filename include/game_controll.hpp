@@ -2,20 +2,29 @@
 #define GAME_CONTROLL_HPP
 
 #include "player.hpp"
+#include "game_state.hpp"
 
 #include <vector>
+#include <QObject>
 
 
-class GameControll
+class GameControll : public QObject
 {
+    Q_OBJECT
 public:
     GameControll(int numberOfPlayers = 2);
-
+    virtual ~GameControll() = default;
 
     void start();
 
+    void turn(Player* activePlayer);
+
 protected:
-    std::vector<Player> players;
+    GameState state;
+
+
+public slots:
+    void playCardRequest(Card_base* card, Target* target);
 };
 
 

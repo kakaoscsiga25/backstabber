@@ -8,20 +8,20 @@
 
 struct Fight
 {
-    Fight(Monster m, Player* player, Player* helper = nullptr) : monster(m), player(player), helper(helper) {}
+    Fight(Monster* m, Player* player, Player* helper = nullptr) : monster(m), player(player), helper(helper) {}
 
     bool fight() // true if the monster is defeated, false if not
     {
-        int attackPlayers = player->getAttackPower();
-        int healthMonster = monster.getAttackPower();
+//        int attackPlayers = player->getAttackPower();
+//        int healthMonster = monster->getAttackPower();
 
-        Logger::getLogger()->log(LogType::INFO, "Fight result (player|monster): " + std::to_string(attackPlayers) + " vs. " + std::to_string(healthMonster));
+//        Logger::getLogger()->log(LogType::INFO, "Fight result (player|monster): " + std::to_string(attackPlayers) + " vs. " + std::to_string(healthMonster));
 
-        return attackPlayers > healthMonster;
+//        return attackPlayers > healthMonster;
     }
 
 protected:
-    Monster monster;
+    Monster* monster;
     Player* player;
     Player* helper;
 };

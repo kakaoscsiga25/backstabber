@@ -10,15 +10,10 @@
 class Deck
 {
 protected:
-    Deck(); // init
-    ~Deck();
 
 public:
-    static Deck* getDeck()
-    {
-        static Deck deck;
-        return &deck;
-    }
+    Deck(); // init
+    ~Deck();
 
     Card_door* pullDoorCard();
     Card_treasure* pullTreasureCard();

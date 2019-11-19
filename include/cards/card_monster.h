@@ -8,20 +8,20 @@
 class CardMonster : public Card_door
 {
 public:
-    CardMonster(Monster m) : Card_door(m.getName()), monster(m) {}
+    CardMonster(Monster* m) : Card_door(m->getName()), monster(m) {}
 
     virtual void pullEffect(Player* player)
     {
         Fight f(monster, player);
         if (f.fight()) // defeated
         {
-            Logger::getLogger()->log(LogType::PLAY, "Monster " + monster.getName() + " is defeated.");
-            monster.reward(player);
+            Logger::getLogger()->log(LogType::PLAY, "Monster " + monster->getName() + " is defeated.");
+            monster->reward(player);
         }
         else
         {
-            Logger::getLogger()->log(LogType::PLAY, "Player is defeated by " + monster.getName());
-            monster.sucks(player);
+            Logger::getLogger()->log(LogType::PLAY, "Player is defeated by " + monster->getName());
+            monster->sucks(player);
         }
     }
     virtual void playEffect(Player* player, Target* toPlayer)
@@ -30,7 +30,7 @@ public:
     }
 
 protected:
-    Monster monster;
+    Monster* monster;
 };
 
 

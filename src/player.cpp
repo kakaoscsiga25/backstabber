@@ -3,28 +3,18 @@
 #include "logger.h"
 
 
-void Player::init()
+void Player::init(Deck* deck)
 {
-    Logger::getLogger()->log(LogType::DEBUG, "Player " + name + " discard " + std::to_string(cards_hand.size()) + " card from the hand");
-    Logger::getLogger()->log(LogType::DEBUG, "Player " + name + " discard " + std::to_string(cards_table.size()) + " card from the table");
-
-    for(auto& card : cards_hand)
-        Deck::getDeck()->discard(card);
-    cards_hand.clear();
-    for(auto& card : cards_table)
-        Deck::getDeck()->discard(card);
-    cards_table.clear();
-
     // Draw new cards
     for (int i = 0; i < 1; i++)
     {
-        Card_base* card = Deck::getDeck()->pullDoorCard();
+        Card_base* card = deck->pullDoorCard();
         if (card)
             cards_hand.push_back(card);
     }
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 1; i++)
     {
-        Card_base* card = Deck::getDeck()->pullTreasureCard();
+        Card_base* card = deck->pullTreasureCard();
         if (card)
             cards_hand.push_back(card);
     }

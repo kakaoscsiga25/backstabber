@@ -1,5 +1,4 @@
 #include "game_controll.hpp"
-#include "turn_controll.hpp"
 #include "logger.h"
 #include "deck.hpp"
 
@@ -9,35 +8,47 @@
 GameControll::GameControll(int numberOfPlayers)
 {
     for (int i = 0; i < numberOfPlayers; i++)
-        players.push_back(Player(std::to_string(i+1))); // init players
-    Logger::getLogger()->log(LogType::INFO, std::to_string(players.size()) + " player are initialized");
+    {
+        state.players.push_back(new Player(std::to_string(i+1))); // init players
+        QObject::connect(state.players.back(), &Player::playCard, this, &GameControll::playCardRequest, Qt::DirectConnection);
+    }
+    Logger::getLogger()->log(LogType::INFO, std::to_string(state.players.size()) + " player are initialized");
+
+    state.deck = new Deck();
 }
 
 void GameControll::start()
 {
-    Logger::getLogger()->log(LogType::PLAY, "Game is started with " + std::to_string(players.size()) + " player.");
+    Logger::getLogger()->log(LogType::PLAY, "Game is started with " + std::to_string(state.players.size()) + " player.");
 
     // Init players
-    for (auto& player : players)
+    for (auto& player : state.players)
     {
-        Logger::getLogger()->log(LogType::DEBUG, "Player " + player.getName() + " initializing...");
-        player.init();
-        Logger::getLogger()->log(LogType::DEBUG, "Player " + player.getName() + " is initialized.");
+        player->init(state.deck);
     }
 
     // Select first player
-    assert(!players.empty());
+    assert(!state.players.empty());
     int pidx = 0;
     bool finished = false;
     while (!finished)
     {
-        Player* activePlayer = &(players.at(pidx));
-        pidx = (pidx+1)%players.size(); // move to next
+        Player* activePlayer = (state.players.at(pidx));
+        pidx = (pidx+1)%state.players.size(); // move to next
 
-        TurnControll turnControll(activePlayer, &players);
-        turnControll.turn();
+        turn(activePlayer);
 
         break; // hack
     }
 
+}
+
+void GameControll::turn(Player* activePlayer)
+{
+
+}
+
+void GameControll::playCardRequest(Card_base* card, Target* target)
+{
+    std::cerr << QObject::sender() << " request " << target << "\n";
 }
