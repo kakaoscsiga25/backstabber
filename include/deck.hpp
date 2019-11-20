@@ -3,6 +3,7 @@
 
 #include "cards/card_door.h"
 #include "cards/card_treasure.h"
+#include "cards/card_item.h"
 #include <vector>
 #include <algorithm>
 
@@ -15,8 +16,8 @@ public:
     Deck(); // init
     ~Deck();
 
-    Card_door* pullDoorCard();
-    Card_treasure* pullTreasureCard();
+//    Card_door pullDoorCard();
+    Card_item* pullTreasureCard();
 
     void discard(Card_base* card);
 
@@ -26,8 +27,8 @@ protected:
 
     std::vector<Card_door*> door_deck;
     std::vector<Card_door*> door_deck_used;
-    std::vector<Card_treasure*> treasure_deck;
-    std::vector<Card_treasure*> treasure_deck_used;
+    std::vector<Card_item*> treasure_deck;
+    std::vector<Card_item*> treasure_deck_used;
 };
 
 

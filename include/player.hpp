@@ -4,6 +4,7 @@
 #include "target.h"
 #include "deck.hpp"
 #include "cards/card_base.h"
+#include "cards/card_item.h"
 
 #include <string>
 #include <vector>
@@ -22,13 +23,24 @@ public:
 
     void init(Deck* deck);
 
-    void addCard(Card_base* card) { if (card) cards_hand.push_back(card); }
+    void addCard(Card_item* card) { if (card) cards_hand.push_back(card); }
 
     void levelUp(int levelUp);
 
+    bool putToTable(Card_item* card);
 
-    std::vector<Card_base*> cards_hand;
-    std::vector<Card_base*> cards_table;
+    bool tryActivate(Card_item* card) const;
+    bool deActivate(Card_item* card) const;
+
+
+    std::vector<Card_item*> cards_hand;
+    std::vector<Card_item*> cards_table;
+
+protected:
+    bool cardInHand(Card_item* card) const;
+    bool cardOnTable(Card_item* card) const;
+    bool removeFromHand(Card_item* card);
+    bool removeFromTable(Card_item* card);
 
 
 signals:
