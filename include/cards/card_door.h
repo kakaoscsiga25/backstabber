@@ -14,7 +14,6 @@ struct Card_door : public Card_base
     virtual ~Card_door() {}
 
     virtual void pullEffect(Player* player) = 0;
-    virtual void playEffect(Player* player, Target* toPlayer) = 0;
 };
 
 #endif // CARD_DOOR_H

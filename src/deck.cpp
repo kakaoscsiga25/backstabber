@@ -5,14 +5,16 @@
 Deck::Deck()
 {
     // Initialize doors deck
-    door_deck.push_back(new CardMonster(new Monster("1lvl monster", 1, 1)));
-    door_deck.push_back(new CardMonster(new Monster("5lvl monster", 5, 1)));
-    door_deck.push_back(new CardMonster(new Monster("10lvl monster", 10, 2)));
-    door_deck.push_back(new CardMonster(new Monster("20lvl monster", 20, 4)));
+//    door_deck.push_back(new CardMonster(new Monster("1lvl monster", 1, 1)));
+//    door_deck.push_back(new CardMonster(new Monster("5lvl monster", 5, 1)));
+//    door_deck.push_back(new CardMonster(new Monster("10lvl monster", 10, 2)));
+//    door_deck.push_back(new CardMonster(new Monster("20lvl monster", 20, 4)));
 
 
-    treasure_deck.push_back(new Card_treasure("K1"));
-    treasure_deck.push_back(new Card_treasure("K2"));
+//    treasure_deck.push_back(new Card_treasure("K1"));
+//    treasure_deck.push_back(new Card_treasure("K2"));
+
+//    treasure_deck.push_back();
 
 
     std::random_shuffle(door_deck.begin(), door_deck.end());

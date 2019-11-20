@@ -13,7 +13,7 @@ struct Card_base
     Card_base(std::string name) : cardName(name) {}
     virtual ~Card_base() = default;
 
-    virtual bool playCard(GameState* state) { return false; }
+    virtual bool playCard(Target* target, GameState* state) { return false; }
 
     std::string cardName;
 };

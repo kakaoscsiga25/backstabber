@@ -2,12 +2,12 @@
 
 GameState::~GameState()
 {
-    for (auto& player : players)
+//    for (auto& player : players)
     {
-        player->disconnect();
-        delete player;
+//        player->disconnect();
+//        delete player;
     }
-    players.clear();
+//    players.clear();
     delete deck;
-    delete fight;
+//    delete fight;
 }

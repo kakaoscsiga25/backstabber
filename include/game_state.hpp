@@ -16,9 +16,10 @@ class GameState : public QObject
 public:
     virtual ~GameState();
 
-    std::vector<Player*> players;
+//    std::vector<Player*> players;
+    Player* player;
     Deck* deck = nullptr;
-    Fight* fight = nullptr;
+//    Fight* fight = nullptr;
 };
 
 

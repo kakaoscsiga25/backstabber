@@ -11,19 +11,8 @@
 
 int main()
 {
-
-    GameControll gc;
-
-    GameState* state = &gc.state;
-
-    for (auto& player : state->players)
-        player->init(state->deck);
-
-    Player* p = state->players.front();
-
-    std::cerr << "Player ptr " << p << "\n";
-
-    emit p->playCard(p->cards_hand.front(), p);
+    Player p("En", 1);
+    Deck deck;
 
 
     return 0;
