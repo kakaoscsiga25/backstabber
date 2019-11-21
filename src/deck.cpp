@@ -24,8 +24,8 @@ Deck::Deck()
     treasure_deck.push_back(new Card_item("Boots of butt-kicking",          2,  400,    Card_item::ItemType::FOOT       , false ));
     treasure_deck.push_back(new Card_item("Flaming armor",                  2,  400,    Card_item::ItemType::ARMOR      , false ));
     treasure_deck.push_back(new Card_item("Sneaky bastard sword",           2,  400,    Card_item::ItemType::ONE_HAND   , false ));
-    treasure_deck.push_back(new Card_item("Lamburger and anchovy sandwich", 3,  100,    Card_item::ItemType::NONE       , false )); // TODO: only for half-breed
-    treasure_deck.push_back(new Card_item("Stepladder",                     3,  400,    Card_item::ItemType::NONE       , true  )); // TODO: only for half-breed
+    treasure_deck.push_back(new Card_item("Lamburger and anchovy sandwich", 3,  100,    Card_item::ItemType::NONE       , false )); // TODO: only for halfling
+    treasure_deck.push_back(new Card_item("Stepladder",                     3,  400,    Card_item::ItemType::NONE       , true  )); // TODO: only for halfling
     treasure_deck.push_back(new Card_item("Really impressive title",        3,  0,      Card_item::ItemType::NONE       , false ));
     treasure_deck.push_back(new Card_item("Pantyhose of giant strength",    3,  600,    Card_item::ItemType::NONE       , false )); // TODO: not for warriors
     treasure_deck.push_back(new Card_item("Pointy hat of power",            3,  400,    Card_item::ItemType::HEAD       , false )); // TODO: only for wizards

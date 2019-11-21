@@ -36,7 +36,12 @@ void Fight::doFight()
 
     Logger::getLogger()->log(LogType::INFO, "Player vs. Monster: " + std::to_string(playerAttack) + ":" + std::to_string(monsterAttack));
 
-    if (playerAttack > monsterAttack)
+    // Final evaluation
+    bool defeat = playerAttack > monsterAttack;
+    if (!defeat && player->playerClass.isWarrior() && playerAttack == monsterAttack) // warrior can beat the monster with equal strength
+        defeat = true;
+
+    if (defeat)
     {
         Logger::getLogger()->log(LogType::INFO, "Monster " + monster->name + " is defeated by " + player->name);
         monster->reward(player, deck);

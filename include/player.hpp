@@ -5,6 +5,7 @@
 #include "deck.hpp"
 #include "cards/card_base.h"
 #include "cards/card_item.h"
+#include "class.h"
 
 #include <string>
 #include <vector>
@@ -42,11 +43,13 @@ public:
     std::vector<Card_item*> cards_hand;
     std::vector<Card_item*> cards_table;
 
+    Class playerClass;
 protected:
     bool cardInHand(Card_item* card) const;
     bool cardOnTable(Card_item* card) const;
     bool removeFromHand(Card_item* card);
     bool removeFromTable(Card_item* card);
+
 
     int money = 0;
     bool dead = false;
