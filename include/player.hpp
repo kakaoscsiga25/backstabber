@@ -23,7 +23,7 @@ public:
 
     void init(Deck* deck);
 
-    void addCard(Card_item* card) { if (card) cards_hand.push_back(card); }
+    void pullCard(Card_item* card) { if (card) cards_hand.push_back(card); }
 
     void levelUp(int levelUp);
 
@@ -33,6 +33,8 @@ public:
     bool deActivate(Card_item* card) const;
 
     bool sell(Card_item* card);
+
+    int attackPower() const;
 
 
     std::vector<Card_item*> cards_hand;
@@ -48,7 +50,7 @@ protected:
 
 
 signals:
-    void playCard(Card_base*, Target*);
+    void usedCard(Card_item* card);
 };
 
 #endif // PLAYER_HPP

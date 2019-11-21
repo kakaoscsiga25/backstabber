@@ -121,7 +121,10 @@ bool Player::sell(Card_item* card)
             removeFromHand(card);
         else
             removeFromTable(card);
+
         Logger::getLogger()->log(LogType::INFO, "Player " + name + " sell " + card->name + " for " + std::to_string(sellPrice) + " gold (sum " + std::to_string(money) + ")");
+
+        emit usedCard(card);
 
         const int LVL_UP_MONEY = 1000;
         int lvl = money / LVL_UP_MONEY;
@@ -134,6 +137,18 @@ bool Player::sell(Card_item* card)
         return true;
     }
     return false;
+}
+
+int Player::attackPower() const
+{
+    int powerFromItems = 0;
+    for (const auto& item : cards_table)
+    {
+        if (item->activated)
+            powerFromItems += item->bonus;
+    }
+
+    return level + powerFromItems;
 }
 
 

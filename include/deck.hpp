@@ -8,18 +8,17 @@
 #include <algorithm>
 
 
-class Deck
+class Deck : public QObject
 {
-protected:
+    Q_OBJECT
 
 public:
     Deck(); // init
-    ~Deck();
+    virtual ~Deck();
 
 //    Card_door pullDoorCard();
     Card_item* pullTreasureCard();
 
-    void discard(Card_base* card);
 
 protected:
     void reshuffleDoorCards();
@@ -29,6 +28,9 @@ protected:
     std::vector<Card_door*> door_deck_used;
     std::vector<Card_item*> treasure_deck;
     std::vector<Card_item*> treasure_deck_used;
+
+public slots:
+    void discard(Card_item* card);
 };
 
 

@@ -79,8 +79,25 @@ Card_item* Deck::pullTreasureCard()
     return card;
 }
 
-//void Deck::discard(Card_base* _card)
-//{
+void Deck::reshuffleDoorCards()
+{
+    door_deck.insert(door_deck.end(), door_deck_used.begin(), door_deck_used.end());
+    door_deck_used.clear();
+    std::random_shuffle(door_deck.begin(), door_deck.end());
+}
+void Deck::reshuffleTreasureCards()
+{
+    treasure_deck.insert(treasure_deck.end(), treasure_deck_used.begin(), treasure_deck_used.end());
+    treasure_deck_used.clear();
+    std::random_shuffle(treasure_deck.begin(), treasure_deck.end());
+}
+
+
+void Deck::discard(Card_item* _card)
+{
+    Logger::getLogger()->log(LogType::DUMP, "Discarded card: " + _card->name);
+    treasure_deck_used.push_back(_card);
+
 //    if (Card_door* card = dynamic_cast<Card_door*>(_card))
 //    {
 //        Logger::getLogger()->log(LogType::DUMP, "Discarded door card: " + card->cardName);
@@ -93,17 +110,4 @@ Card_item* Deck::pullTreasureCard()
 //    }
 //    else
 //        Logger::getLogger()->log(LogType::FATAL, "Unknown discarded card type.");
-//}
-
-void Deck::reshuffleDoorCards()
-{
-    door_deck.insert(door_deck.end(), door_deck_used.begin(), door_deck_used.end());
-    door_deck_used.clear();
-    std::random_shuffle(door_deck.begin(), door_deck.end());
-}
-void Deck::reshuffleTreasureCards()
-{
-    treasure_deck.insert(treasure_deck.end(), treasure_deck_used.begin(), treasure_deck_used.end());
-    treasure_deck_used.clear();
-    std::random_shuffle(treasure_deck.begin(), treasure_deck.end());
 }
