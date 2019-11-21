@@ -5,6 +5,9 @@
 #include <iostream>
 #include <QObject>
 
+#include "cards/card_effect.h"
+
+
 class Target : public QObject
 {
     Q_OBJECT
@@ -14,12 +17,23 @@ public:
 
     std::string getName() const { return name; }
 
-    int getAttackPower() const { return level; }
+    virtual int attackPower() const { return level; }
+
+    void addNewEffectCard(Card_effect* card) { effectCards.push_back(card); }
+
+    int evaluateCardEffects() const
+    {
+        int change = 0;
+        for (const auto& c : effectCards)
+            change += c->changeValue;
+        return change;
+    }
 
 
     std::string name;
 protected:
     int level;
+    std::vector<Card_effect*> effectCards;
 };
 
 

@@ -12,7 +12,7 @@ void Player::init(Deck* deck)
 //        if (card)
 //            cards_hand.push_back(card);
 //    }
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 5; i++)
     {
         Card_item* card = deck->pullTreasureCard();
         if (card)
@@ -39,6 +39,15 @@ bool Player::putToTable(Card_item* card)
     if (!cardInHand(card)) // card is not in hand (something went wrong)
         return false;
 
+    // Check big size item rule
+    if (card->bigSize)
+        for (const auto& c : cards_table)
+            if (c->bigSize)
+            {
+                Logger::getLogger()->log(LogType::INFO, "You can not play another \'big\' sized item!");
+                return false;
+            }
+
     // Put to table
     if (!removeFromHand(card)) // cant remove from hand (something went wrong)
         return false;
@@ -46,7 +55,7 @@ bool Player::putToTable(Card_item* card)
 
     // Try to activate
     bool activated = tryActivate(card);
-    Logger::getLogger()->log(LogType::DEBUG, "Card " + card->cardName + " put to table and" + ((activated)?" is":" CAN\T") + " activated");
+    Logger::getLogger()->log(LogType::DEBUG, "Card " + card->cardName + " put to table and" + ((activated)?" is":" CAN NOT") + " activated");
 
     return true;
 }

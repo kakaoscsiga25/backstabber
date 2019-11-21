@@ -34,7 +34,7 @@ public:
 
     bool sell(Card_item* card);
 
-    int attackPower() const;
+    virtual int attackPower() const;
 
     void die();
 

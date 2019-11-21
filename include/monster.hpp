@@ -29,8 +29,6 @@ public:
 
     void badStuff(Player* player) const;
 
-    int attackPower() const { return level; }
-
 protected:
     int rewardTreasure;
     int levelReward; // if the monster is defeated

@@ -1,6 +1,8 @@
 #ifndef FIGHT_HPP
 #define FIGHT_HPP
 
+#include <deque>
+
 #include "monster.hpp"
 #include "player.hpp"
 #include "logger.h"
@@ -24,6 +26,11 @@ protected:
     Player* player;
 //    Player* helper;
     Deck* deck;
+
+    std::deque<std::pair<Card_effect*, Target*> > playedCards;
+
+public slots:
+    void playCard(Card_effect* card, Target* target) { playedCards.push_back(std::pair<Card_effect*, Target*>(card, target)); }
 };
 
 #endif // FIGHT_HPP

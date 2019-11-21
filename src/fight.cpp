@@ -1,10 +1,38 @@
 #include "fight.hpp"
+#include <unistd.h>
 
 
 void Fight::doFight()
 {
     int playerAttack = player->attackPower();
     int monsterAttack = monster->attackPower();
+
+    // Wait for interactions
+    int waitTime = 5;
+    int waited = 0;
+    while(waitTime > waited)
+    {
+        if (!playedCards.empty())
+        {
+            for (size_t i = 0; i < playedCards.size(); i++)
+            {
+                // Apply the card effects
+                Card_effect* card = playedCards[i].first;
+                Target* target = playedCards[i].second;
+                target->addNewEffectCard(card);
+            }
+            playedCards.clear();
+
+            playerAttack = player->attackPower() + player->evaluateCardEffects();
+            monsterAttack = monster->attackPower() + monster->evaluateCardEffects();
+
+            Logger::getLogger()->log(LogType::INFO, "CHANGED STATS: Player vs. Monster: " + std::to_string(playerAttack) + ":" + std::to_string(monsterAttack));
+        }
+
+        Logger::getLogger()->log(LogType::DEBUG, "Wait for action... " + std::to_string(waitTime - waited));
+        sleep(1);
+        waited += 1;
+    }
 
     Logger::getLogger()->log(LogType::INFO, "Player vs. Monster: " + std::to_string(playerAttack) + ":" + std::to_string(monsterAttack));
 

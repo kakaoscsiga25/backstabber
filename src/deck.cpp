@@ -11,17 +11,27 @@ Deck::Deck()
     door_deck.push_back(new Card_monster("Large angry chicken", 2, 1, 1, Monster::BadStuffs::LOSE_LVL));
     std::random_shuffle(door_deck.begin(), door_deck.end());
 
-    treasure_deck.push_back(new Card_item("Spiky knee\'s",      1,  200,    Card_item::ItemType::NONE       ));
-    treasure_deck.push_back(new Card_item("Eleven-foot pole",   1,  200,    Card_item::ItemType::TWO_HAND   ));
-    treasure_deck.push_back(new Card_item("Rat on a stick",     1,  0,      Card_item::ItemType::ONE_HAND   ));
-    treasure_deck.push_back(new Card_item("Helm of courage",    1,  200,    Card_item::ItemType::HEAD       ));
-    treasure_deck.push_back(new Card_item("Hireling",           1,  0,      Card_item::ItemType::NONE       ));
-    treasure_deck.push_back(new Card_item("Horny helmet",       1,  600,    Card_item::ItemType::HEAD       )); // TODO: +3 if elf
-    treasure_deck.push_back(new Card_item("Slimy armor",        1,  200,    Card_item::ItemType::ARMOR      ));
-    treasure_deck.push_back(new Card_item("Leather armor",      1,  300,    Card_item::ItemType::ARMOR      ));
-    treasure_deck.push_back(new Card_item("Buckler of swashing",2,  400,    Card_item::ItemType::ONE_HAND   ));
-    treasure_deck.push_back(new Card_item("Dancing sword",      2,  400,    Card_item::ItemType::NONE       )); // TODO: not for thiefs
-    //    std::random_shuffle(treasure_deck.begin(), treasure_deck.end());
+    treasure_deck.push_back(new Card_item("Spiky knee\'s",                  1,  200,    Card_item::ItemType::NONE       , false ));
+    treasure_deck.push_back(new Card_item("Eleven-foot pole",               1,  200,    Card_item::ItemType::TWO_HAND   , false ));
+    treasure_deck.push_back(new Card_item("Rat on a stick",                 1,  0,      Card_item::ItemType::ONE_HAND   , false ));
+    treasure_deck.push_back(new Card_item("Helm of courage",                1,  200,    Card_item::ItemType::HEAD       , false ));
+    treasure_deck.push_back(new Card_item("Hireling",                       1,  0,      Card_item::ItemType::NONE       , false ));
+    treasure_deck.push_back(new Card_item("Horny helmet",                   1,  600,    Card_item::ItemType::HEAD       , false )); // TODO: +3 if elf
+    treasure_deck.push_back(new Card_item("Slimy armor",                    1,  200,    Card_item::ItemType::ARMOR      , false ));
+    treasure_deck.push_back(new Card_item("Leather armor",                  1,  300,    Card_item::ItemType::ARMOR      , false ));
+    treasure_deck.push_back(new Card_item("Buckler of swashing",            2,  400,    Card_item::ItemType::ONE_HAND   , false ));
+    treasure_deck.push_back(new Card_item("Dancing sword",                  2,  400,    Card_item::ItemType::NONE       , false )); // TODO: not for thiefs
+    treasure_deck.push_back(new Card_item("Boots of butt-kicking",          2,  400,    Card_item::ItemType::FOOT       , false ));
+    treasure_deck.push_back(new Card_item("Flaming armor",                  2,  400,    Card_item::ItemType::ARMOR      , false ));
+    treasure_deck.push_back(new Card_item("Sneaky bastard sword",           2,  400,    Card_item::ItemType::ONE_HAND   , false ));
+    treasure_deck.push_back(new Card_item("Lamburger and anchovy sandwich", 3,  100,    Card_item::ItemType::NONE       , false )); // TODO: only for half-breed
+    treasure_deck.push_back(new Card_item("Stepladder",                     3,  400,    Card_item::ItemType::NONE       , true  )); // TODO: only for half-breed
+    treasure_deck.push_back(new Card_item("Really impressive title",        3,  0,      Card_item::ItemType::NONE       , false ));
+    treasure_deck.push_back(new Card_item("Pantyhose of giant strength",    3,  600,    Card_item::ItemType::NONE       , false )); // TODO: not for warriors
+    treasure_deck.push_back(new Card_item("Pointy hat of power",            3,  400,    Card_item::ItemType::HEAD       , false )); // TODO: only for wizards
+    treasure_deck.push_back(new Card_item("Bad-ass bandana",                3,  400,    Card_item::ItemType::HEAD       , false )); // TODO: only for humans
+    treasure_deck.push_back(new Card_item("Mithril armor",                  3,  600,    Card_item::ItemType::ARMOR      , true  )); // TODO: not for wizards
+    std::random_shuffle(treasure_deck.begin(), treasure_deck.end());
 }
 Deck::~Deck()
 {
@@ -84,12 +94,14 @@ void Deck::reshuffleDoorCards()
     door_deck.insert(door_deck.end(), door_deck_used.begin(), door_deck_used.end());
     door_deck_used.clear();
     std::random_shuffle(door_deck.begin(), door_deck.end());
+    Logger::getLogger()->log(LogType::INFO, "Door card\'s deck is resuffled: " + std::to_string(door_deck.size()));
 }
 void Deck::reshuffleTreasureCards()
 {
     treasure_deck.insert(treasure_deck.end(), treasure_deck_used.begin(), treasure_deck_used.end());
     treasure_deck_used.clear();
     std::random_shuffle(treasure_deck.begin(), treasure_deck.end());
+    Logger::getLogger()->log(LogType::INFO, "Treasure card\'s deck is resuffled: " + std::to_string(treasure_deck.size()));
 }
 
 
