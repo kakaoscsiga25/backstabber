@@ -32,6 +32,8 @@ public:
     bool tryActivate(Card_item* card) const;
     bool deActivate(Card_item* card) const;
 
+    bool sell(Card_item* card);
+
 
     std::vector<Card_item*> cards_hand;
     std::vector<Card_item*> cards_table;
@@ -41,6 +43,8 @@ protected:
     bool cardOnTable(Card_item* card) const;
     bool removeFromHand(Card_item* card);
     bool removeFromTable(Card_item* card);
+
+    int money = 0;
 
 
 signals:

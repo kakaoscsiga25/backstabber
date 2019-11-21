@@ -21,10 +21,12 @@ int main()
         p.putToTable(p.cards_hand.front());
     }
 
-    p.deActivate(p.cards_table.at(1));
-    p.deActivate(p.cards_table.at(7));
-
-    p.tryActivate(p.cards_table.at(8));
+    p.sell(p.cards_table.at(3));
+    p.sell(p.cards_table.at(3));
+    p.sell(p.cards_table.at(3));
+    p.sell(p.cards_table.at(3));
+    p.sell(p.cards_table.at(3));
+    p.sell(p.cards_table.at(3));
 
     return 0;
 }

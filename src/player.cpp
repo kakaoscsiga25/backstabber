@@ -111,6 +111,31 @@ bool Player::deActivate(Card_item* card) const
     return true;
 }
 
+bool Player::sell(Card_item* card)
+{
+    if (cardInHand(card) || cardOnTable(card))
+    {
+        int sellPrice = card->price;
+        money += sellPrice;
+        if (cardInHand(card))
+            removeFromHand(card);
+        else
+            removeFromTable(card);
+        Logger::getLogger()->log(LogType::INFO, "Player " + name + " sell " + card->name + " for " + std::to_string(sellPrice) + " gold (sum " + std::to_string(money) + ")");
+
+        const int LVL_UP_MONEY = 1000;
+        int lvl = money / LVL_UP_MONEY;
+        if (lvl)
+        {
+            levelUp(lvl);
+            money -= lvl*LVL_UP_MONEY;
+        }
+
+        return true;
+    }
+    return false;
+}
+
 
 bool Player::cardInHand(Card_item* card) const
 {
@@ -140,11 +165,11 @@ bool Player::removeFromHand(Card_item* card)
 }
 bool Player::removeFromTable(Card_item* card)
 {
-    for (size_t i = 0; i < cards_hand.size(); i++)
+    for (size_t i = 0; i < cards_table.size(); i++)
     {
-        if (card == cards_hand[i])
+        if (card == cards_table[i])
         {
-            cards_hand.erase(cards_hand.begin()+i);
+            cards_table.erase(cards_table.begin()+i);
             return true;
         }
     }
