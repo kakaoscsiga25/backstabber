@@ -17,8 +17,8 @@ public:
     int getAttackPower() const { return level; }
 
 
-protected:
     std::string name;
+protected:
     int level;
 };
 

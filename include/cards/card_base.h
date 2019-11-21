@@ -2,18 +2,15 @@
 #define CARDS_BASE_H
 
 #include <string>
-#include "game_state.hpp"
 
 
-class GameState;
-
-
-struct Card_base
+class Card_base
 {
+public:
     Card_base(std::string name) : cardName(name) {}
     virtual ~Card_base() = default;
 
-    virtual bool playCard(Target* target, GameState* state) { return false; }
+//    virtual bool playCard(Target* target, GameState* state) { return false; }
 
     std::string cardName;
 };

@@ -7,33 +7,34 @@
 #include "player.hpp"
 #include "deck.hpp"
 #include "game_controll.hpp"
+#include "cards/card_monster.h"
 
 using namespace std;
+
 
 int main()
 {
     Player p("En", 1);
     Deck deck;
-
     QObject::connect(&p, &Player::usedCard, &deck, &Deck::discard);
 
+    p.init(&deck);
 
-    while (auto card = deck.pullTreasureCard())
+
+    for (int i=0;i<5;i++)
     {
-        p.pullCard(card);
-        p.putToTable(p.cards_hand.front());
+        if (p.dead)
+            p.init(&deck);
+
+        // Try put to table all card
+        for (size_t i = 0; i < p.cards_hand.size();)
+            if (!p.putToTable(p.cards_hand.at(i)))
+                i++;
+
+        Card_monster* monsterCard = deck.pullDoorCard();
+        monsterCard->fightWithMonster(&p, &deck);
     }
 
-    cerr << p.attackPower() << "\n";
-
-    p.sell(p.cards_table.at(3));
-    p.sell(p.cards_table.at(3));
-    p.sell(p.cards_table.at(3));
-    p.sell(p.cards_table.at(3));
-    p.sell(p.cards_table.at(3));
-    p.sell(p.cards_table.at(3));
-
-    cerr << p.attackPower() << "\n";
 
     return 0;
 }

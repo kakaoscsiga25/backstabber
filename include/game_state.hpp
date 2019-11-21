@@ -6,8 +6,9 @@
 #include "fight.hpp"
 
 
-struct Card_base;
-struct Deck;
+class Card_base;
+class Deck;
+class Player;
 
 
 class GameState : public QObject

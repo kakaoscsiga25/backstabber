@@ -25,7 +25,7 @@ public:
 
     void pullCard(Card_item* card) { if (card) cards_hand.push_back(card); }
 
-    void levelUp(int levelUp);
+    void levelChange(int levelChange);
 
     bool putToTable(Card_item* card);
 
@@ -35,6 +35,8 @@ public:
     bool sell(Card_item* card);
 
     int attackPower() const;
+
+    void die();
 
 
     std::vector<Card_item*> cards_hand;
@@ -47,6 +49,7 @@ protected:
     bool removeFromTable(Card_item* card);
 
     int money = 0;
+    bool dead = false;
 
 
 signals:

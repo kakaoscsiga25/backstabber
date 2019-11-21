@@ -3,10 +3,10 @@
 
 #include <string>
 
+#include "card_base.h"
 
 
-
-class Card_item
+class Card_item : public Card_base
 {
 public:
     enum ItemType {
@@ -20,11 +20,10 @@ public:
         WEAPON      = ONE_HAND | TWO_HAND,
     };
 
-    Card_item(std::string name, int bonus = 0, int price = 0, ItemType type = NONE) : name(name), bonus(bonus), price(price), type(type) {}
+    Card_item(std::string name, int bonus = 0, int price = 0, ItemType type = NONE) :
+        Card_base(name), bonus(bonus), price(price), type(type) {}
     virtual ~Card_item() = default;
 
-
-    std::string name;
 
     int bonus;
     int price;

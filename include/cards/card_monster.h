@@ -1,36 +1,26 @@
 #ifndef CARD_MONSTER_H
 #define CARD_MONSTER_H
 
-#include "card_door.h"
+#include "monster.hpp"
 #include "fight.hpp"
-#include "logger.h"
 
-class CardMonster : public Card_door
+
+class Card_monster : public Card_base
 {
 public:
-    CardMonster(Monster* m) : Card_door(m->getName()), monster(m) {}
+    Card_monster(std::string name, int level, int treasures, int levelReward, Monster::BadStuffs badThing) :
+        Card_base(name), monster(name, level, treasures, levelReward, badThing) {}
 
-    virtual void pullEffect(Player* player)
+    void fightWithMonster(Player* player, Deck* deck)
     {
-        Fight f(monster, player);
-        if (f.fight()) // defeated
-        {
-            Logger::getLogger()->log(LogType::PLAY, "Monster " + monster->getName() + " is defeated.");
-            monster->reward(player);
-        }
-        else
-        {
-            Logger::getLogger()->log(LogType::PLAY, "Player is defeated by " + monster->getName());
-            monster->sucks(player);
-        }
+        Fight f(&monster, player, deck);
+        f.doFight();
+        deck->discard(this);
     }
-    virtual void playEffect(Player* player, Target* toPlayer)
-    {
 
-    }
 
 protected:
-    Monster* monster;
+    Monster monster;
 };
 
 

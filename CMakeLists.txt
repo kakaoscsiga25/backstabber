@@ -25,8 +25,10 @@ file(GLOB backstabber_headers
 
 ADD_LIBRARY(core STATIC
     src/deck.cpp
+    src/fight.cpp
     src/game_controll.cpp
     src/game_state.cpp
+    src/monster.cpp
     src/player.cpp
 
     ${backstabber_headers}

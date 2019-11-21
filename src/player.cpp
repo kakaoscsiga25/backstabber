@@ -5,28 +5,32 @@
 
 void Player::init(Deck* deck)
 {
-//    // Draw new cards
+    // Draw new cards
 //    for (int i = 0; i < 1; i++)
 //    {
 //        Card_base* card = deck->pullDoorCard();
 //        if (card)
 //            cards_hand.push_back(card);
 //    }
-//    for (int i = 0; i < 1; i++)
-//    {
-//        Card_base* card = deck->pullTreasureCard();
-//        if (card)
-//            cards_hand.push_back(card);
-//    }
+    for (int i = 0; i < 3; i++)
+    {
+        Card_item* card = deck->pullTreasureCard();
+        if (card)
+            cards_hand.push_back(card);
+    }
+    dead = false;
 
 //    Logger::getLogger()->log(LogType::DEBUG, "Player " + name + " has " + std::to_string(cards_hand.size()) + " cards in hand.");
 }
 
-void Player::levelUp(int levelUp)
+void Player::levelChange(int levelChange)
 {
     int initLvl = level;
-    level += levelUp;
-    Logger::getLogger()->log(LogType::PLAY, "Player " + name + " level up: " + std::to_string(initLvl) + "->" + std::to_string(level));
+    level += levelChange;
+
+    level = std::max(level, 1); // min level is 1
+
+    Logger::getLogger()->log(LogType::PLAY, "Player " + name + " level changed: " + std::to_string(initLvl) + "->" + std::to_string(level));
 //    if (level > 10)  TODO win condition
 }
 
@@ -42,7 +46,7 @@ bool Player::putToTable(Card_item* card)
 
     // Try to activate
     bool activated = tryActivate(card);
-    Logger::getLogger()->log(LogType::DEBUG, "Card " + card->name + " put to table and" + ((activated)?" is":" CAN\T") + " activated");
+    Logger::getLogger()->log(LogType::DEBUG, "Card " + card->cardName + " put to table and" + ((activated)?" is":" CAN\T") + " activated");
 
     return true;
 }
@@ -122,7 +126,7 @@ bool Player::sell(Card_item* card)
         else
             removeFromTable(card);
 
-        Logger::getLogger()->log(LogType::INFO, "Player " + name + " sell " + card->name + " for " + std::to_string(sellPrice) + " gold (sum " + std::to_string(money) + ")");
+        Logger::getLogger()->log(LogType::INFO, "Player " + name + " sell " + card->cardName + " for " + std::to_string(sellPrice) + " gold (sum " + std::to_string(money) + ")");
 
         emit usedCard(card);
 
@@ -130,7 +134,7 @@ bool Player::sell(Card_item* card)
         int lvl = money / LVL_UP_MONEY;
         if (lvl)
         {
-            levelUp(lvl);
+            levelChange(lvl);
             money -= lvl*LVL_UP_MONEY;
         }
 
@@ -149,6 +153,18 @@ int Player::attackPower() const
     }
 
     return level + powerFromItems;
+}
+
+void Player::die()
+{
+    for (const auto& c : cards_hand)
+        emit usedCard(c);
+    for (const auto& c : cards_table)
+        emit usedCard(c);
+    cards_hand.clear();
+    cards_table.clear();
+    dead = true;
+    Logger::getLogger()->log(LogType::INFO, "Player " + name + " is died.");
 }
 
 

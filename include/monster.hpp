@@ -7,28 +7,34 @@
 #include "logger.h"
 
 
-struct Player;
+class Player;
+class Deck;
 
 
 class Monster : public Target
 {
     Q_OBJECT
 public:
-    Monster(std::string name, int level, int treasures, int levelUp = 1) : Target(name, level), rewardTreasure(treasures), levelUp(levelUp) {}
-
-    void reward(Player* player)
+    enum BadStuffs
     {
-    }
+        NOTHING     =   0,
+        DIE         =   1,
+        LOSE_LVL    =   2,
+    };
 
-    void sucks(Player* player)
-    {
-//        Logger::getLogger()->log(LogType::DEBUG, "Monster suck is now kill.");
-//        player->init();
-    }
+    Monster(std::string name, int level, int treasures, int levelReward, BadStuffs badThing) :
+        Target(name, level), rewardTreasure(treasures), levelReward(levelReward), suck(badThing) {}
+
+    void reward(Player* player, Deck* deck) const;
+
+    void badStuff(Player* player) const;
+
+    int attackPower() const { return level; }
 
 protected:
     int rewardTreasure;
-    int levelUp;
+    int levelReward; // if the monster is defeated
+    BadStuffs suck;
 };
 
 #endif // MONSTER_HPP
