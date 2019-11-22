@@ -1,11 +1,14 @@
-#include "game_controll.hpp"
+#include <QApplication>
+
+#include "gui/main_window.hpp"
 
 
-int main()
+int main(int argc, char **argv)
 {
-    GameControll gc;
+    QApplication app(argc, argv);
 
-    gc.start();
+    MainWindow window;
+//    window.ex
 
-    return 0;
+    return app.exec();
 }

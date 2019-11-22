@@ -13,9 +13,10 @@ set(CMAKE_CXX_FLAGS "-Wall -fPIC")
 
 find_package(Qt5Core REQUIRED)
 
+find_package(Qt5Widgets)
 
 
-INCLUDE_DIRECTORIES(include)
+include_directories(include)
 
 file(GLOB backstabber_headers
     ${CMAKE_SOURCE_DIR}/include/*.h
@@ -23,7 +24,7 @@ file(GLOB backstabber_headers
     ${CMAKE_SOURCE_DIR}/include/cards/*.h
     )
 
-ADD_LIBRARY(core STATIC
+add_library(core STATIC
     src/deck.cpp
     src/fight.cpp
     src/game_controll.cpp
@@ -36,8 +37,26 @@ ADD_LIBRARY(core STATIC
 target_link_libraries(core Qt5::Core)
 
 
+set(CMAKE_AUTOUIC ON)
+
+file(GLOB gui_headers
+    ${CMAKE_SOURCE_DIR}/include/gui/*.hpp
+    ${CMAKE_SOURCE_DIR}/include/gui/*.h
+    )
+file(GLOB gui_uis
+    ${CMAKE_SOURCE_DIR}/src/gui/*.ui
+    )
+add_library(gui STATIC
+    src/gui/main_window.cpp
+
+    ${gui_headers}
+    ${gui_uis}
+    )
+target_link_libraries(gui Qt5::Widgets)
+
+
 add_executable(${PROJECT_NAME} "src/executables/main_demo.cpp")
-target_link_libraries(${PROJECT_NAME} core)
+target_link_libraries(${PROJECT_NAME} core gui)
 
 add_executable(run_test "src/executables/test.cpp")
 target_link_libraries(run_test core)
