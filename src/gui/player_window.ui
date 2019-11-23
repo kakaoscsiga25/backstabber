@@ -14,30 +14,20 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QFrame" name="TableArea">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>150</y>
-      <width>88</width>
-      <height>34</height>
+      <x>50</x>
+      <y>10</y>
+      <width>521</width>
+      <height>321</height>
      </rect>
     </property>
-    <property name="text">
-     <string>button</string>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
     </property>
-   </widget>
-   <widget class="QToolButton" name="toolButton">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>180</y>
-      <width>33</width>
-      <height>34</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
     </property>
    </widget>
   </widget>
