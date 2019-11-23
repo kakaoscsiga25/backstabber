@@ -1,14 +1,16 @@
 #include <QApplication>
+#include <QPushButton>
+#include <QFrame>
 
-#include "gui/main_window.hpp"
+#include "gui/player_window.hpp"
 
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    MainWindow window;
-//    window.ex
+    PlayerWindow window;
+    window.show();
 
     return app.exec();
 }

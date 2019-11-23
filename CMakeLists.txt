@@ -2,18 +2,16 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(backstabber)
 
-#set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Wall -fPIC")
 
-#find_package(Qt5Widgets REQUIRED)
-#include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 find_package(Qt5Core REQUIRED)
-
-find_package(Qt5Widgets)
+find_package(Qt5Widgets) # GUI
 
 
 include_directories(include)
@@ -37,26 +35,24 @@ add_library(core STATIC
 target_link_libraries(core Qt5::Core)
 
 
-set(CMAKE_AUTOUIC ON)
-
 file(GLOB gui_headers
-    ${CMAKE_SOURCE_DIR}/include/gui/*.hpp
     ${CMAKE_SOURCE_DIR}/include/gui/*.h
+    ${CMAKE_SOURCE_DIR}/include/gui/*.hpp
     )
-file(GLOB gui_uis
-    ${CMAKE_SOURCE_DIR}/src/gui/*.ui
-    )
-add_library(gui STATIC
-    src/gui/main_window.cpp
 
-    ${gui_headers}
-    ${gui_uis}
-    )
-target_link_libraries(gui Qt5::Widgets)
+file(GLOB gui_srcs ${CMAKE_SOURCE_DIR}/src/gui/*.cpp)
+file(GLOB gui_uis ${CMAKE_SOURCE_DIR}/src/gui/*.ui)
 
+#include_directories(ui)
 
-add_executable(${PROJECT_NAME} "src/executables/main_demo.cpp")
-target_link_libraries(${PROJECT_NAME} core gui)
+message("asd")
+#message(${gui_headers})
+#message(${gui_srcs})
+#message(${gui_uis})
+
+#add_executable(${PROJECT_NAME} "main.cpp" ${gui_headers} ${gui_srcs} ${gui_uis})
+add_executable(${PROJECT_NAME} "src/executables/main_demo.cpp" ${gui_headers} ${gui_srcs} ${gui_uis})
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
 
 add_executable(run_test "src/executables/test.cpp")
 target_link_libraries(run_test core)
