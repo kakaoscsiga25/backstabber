@@ -24,15 +24,23 @@ public:
 
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
+    void asdasd()
+    {
+        std::cerr << "parent call \n";
+    }
 
 private:
     Ui::PlayerWindow *ui;
 
 //    PlayArea* playArea;
     Card_base_gui* card;
+    Card_base_gui* card2;
 
 public slots:
-    void asd() { std::cerr << "clicked\n"; }
+    void asd(QPoint pos) {
+        std::cerr << pos.x() << " " << pos.y() << "\n";
+//        card->is
+    }
 };
 
 #endif // PLAYER_WINDOW_HPP

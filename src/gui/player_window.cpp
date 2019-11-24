@@ -17,8 +17,15 @@ PlayerWindow::PlayerWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::Pl
 
     card = new Card_base_gui(this);
     card->card = new Card_base("alma");
+    card->move(100,100);
+
+    card2 = new Card_base_gui(this);
+    card2->card = new Card_base("asd");
+    card2->move(300,100);
+
 
     connect(card, &Card_base_gui::clicked, this, &PlayerWindow::asd);
+    connect(card2, &Card_base_gui::clicked, this, &PlayerWindow::asd);
 }
 
 PlayerWindow::~PlayerWindow()
@@ -29,17 +36,7 @@ PlayerWindow::~PlayerWindow()
 
 void PlayerWindow::paintEvent(QPaintEvent* event)
 {
-//    QPainter painter(this);
-//    QPainter painter((ui->widget));
-//    painter.drawEllipse(QPointF(200,100), 10,10);
 
-//    QImage image1;
-//    image1.load("/home/gergo/dev/backstabber/data/cards/DMO_T_BG.png");
-//    painter.drawImage(155, 130, image1);
-
-//    QGraphicsPixmapItem pmi = QGraphicsPixmapItem::acceptDrops();
-
-    card->paintEvent(event);
 }
 
 void PlayerWindow::mousePressEvent(QMouseEvent* event)
