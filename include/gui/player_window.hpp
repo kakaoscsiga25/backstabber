@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 
+#include "gui/card_base_gui.hpp"
+#include "gui/hand_area.hpp"
+#include <iostream>
+
+
 namespace Ui {
 class PlayerWindow;
 }
@@ -22,6 +27,12 @@ public:
 
 private:
     Ui::PlayerWindow *ui;
+
+//    PlayArea* playArea;
+    Card_base_gui* card;
+
+public slots:
+    void asd() { std::cerr << "clicked\n"; }
 };
 
 #endif // PLAYER_WINDOW_HPP

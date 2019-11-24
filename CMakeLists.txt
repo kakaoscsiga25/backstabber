@@ -35,24 +35,25 @@ add_library(core STATIC
 target_link_libraries(core Qt5::Core)
 
 
+
 file(GLOB gui_headers
     ${CMAKE_SOURCE_DIR}/include/gui/*.h
     ${CMAKE_SOURCE_DIR}/include/gui/*.hpp
     )
-
 file(GLOB gui_srcs ${CMAKE_SOURCE_DIR}/src/gui/*.cpp)
 file(GLOB gui_uis ${CMAKE_SOURCE_DIR}/src/gui/*.ui)
+#file(GLOB gui_uis ${CMAKE_SOURCE_DIR}/include/gui/*.ui)
 
-#include_directories(ui)
+add_library(gui STATIC
+    ${gui_headers}
+    ${gui_srcs}
+    ${gui_uis}
+    )
+target_link_libraries(gui Qt5::Widgets)
 
-message("asd")
-#message(${gui_headers})
-#message(${gui_srcs})
-#message(${gui_uis})
 
-#add_executable(${PROJECT_NAME} "main.cpp" ${gui_headers} ${gui_srcs} ${gui_uis})
-add_executable(${PROJECT_NAME} "src/executables/main_demo.cpp" ${gui_headers} ${gui_srcs} ${gui_uis})
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
+add_executable(${PROJECT_NAME} "src/executables/main_demo.cpp" )
+target_link_libraries(${PROJECT_NAME} gui)
 
 add_executable(run_test "src/executables/test.cpp")
 target_link_libraries(run_test core)
