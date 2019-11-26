@@ -10,7 +10,7 @@ class Player;
 
 struct Card_door : public Card_base
 {
-    Card_door(std::string cardName) : Card_base(cardName) {}
+    Card_door(std::string ID, std::string cardName) : Card_base(ID, cardName) {}
     virtual ~Card_door() {}
 
     virtual void pullEffect(Player* player) = 0;

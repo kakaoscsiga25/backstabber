@@ -53,7 +53,7 @@ target_link_libraries(gui Qt5::Widgets)
 
 
 add_executable(${PROJECT_NAME} "src/executables/main_demo.cpp" )
-target_link_libraries(${PROJECT_NAME} gui)
+target_link_libraries(${PROJECT_NAME} core gui)
 
 add_executable(run_test "src/executables/test.cpp")
 target_link_libraries(run_test core)

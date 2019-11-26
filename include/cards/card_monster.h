@@ -8,8 +8,8 @@
 class Card_monster : public Card_base
 {
 public:
-    Card_monster(std::string name, int level, int treasures, int levelReward, Monster::BadStuffs badThing) :
-        Card_base(name), monster(name, level, treasures, levelReward, badThing) {}
+    Card_monster(std::string ID, std::string name, int level, int treasures, int levelReward, Monster::BadStuffs badThing) :
+        Card_base(ID, name), monster(name, level, treasures, levelReward, badThing) {}
 
     void fightWithMonster(Player* player, Deck* deck)
     {

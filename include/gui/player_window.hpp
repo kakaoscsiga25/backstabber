@@ -2,10 +2,11 @@
 #define PLAYER_WINDOW_HPP
 
 #include <QMainWindow>
+#include <memory>
 
 #include "gui/card_base_gui.hpp"
-#include "gui/hand_area.hpp"
-#include <iostream>
+#include "fight.hpp"
+
 
 
 namespace Ui {
@@ -17,38 +18,36 @@ class PlayerWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit PlayerWindow(QWidget *parent = 0);
+    PlayerWindow(Player* player, QWidget *parent = nullptr);
     ~PlayerWindow();
 
     void paintEvent(QPaintEvent* event);
 
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
-//    void mouseReleaseEvent(QMouseEvent* event)
-//    {
-//        Card_base_gui *child = dynamic_cast<Card_base_gui*>(childAt(event->pos()));
-//        if (child)
-//            std::cerr << "REL on " << child << "\n";
-//        else
-//            std::cerr << "no \n";
-//    }
-    void asdasd()
+
+    void resizeEvent(QResizeEvent* event)
     {
-        std::cerr << "parent call \n";
+       QMainWindow::resizeEvent(event);
+//       emit refresh();
+       stateChanged();
     }
 
 private:
-    Ui::PlayerWindow *ui;
+    Player* player;
+    Fight* fight = nullptr;
+    std::vector<std::shared_ptr<QWidget> > objects;
 
-//    PlayArea* playArea;
-    Card_base_gui* card;
-    Card_base_gui* card2;
+    Ui::PlayerWindow *ui;
+    QFrame* handArea = nullptr;
+    QFrame* itemsArea = nullptr;
+    QFrame* monsterArea = nullptr;
+
+signals:
+    void refresh();
 
 public slots:
-    void asd(QPoint pos) {
-        std::cerr << pos.x() << " " << pos.y() << "\n";
-//        card->is
-    }
+    void stateChanged();
 };
 
 #endif // PLAYER_WINDOW_HPP

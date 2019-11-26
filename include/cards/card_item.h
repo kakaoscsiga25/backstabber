@@ -20,8 +20,8 @@ public:
         WEAPON      = ONE_HAND | TWO_HAND,
     };
 
-    Card_item(std::string name, int bonus = 0, int price = 0, ItemType type = NONE, bool bigSize = false) :
-        Card_base(name), bonus(bonus), price(price), type(type), bigSize(bigSize) {}
+    Card_item(std::string ID, std::string name, int bonus = 0, int price = 0, ItemType type = NONE, bool bigSize = false) :
+        Card_base(ID, name), bonus(bonus), price(price), type(type), bigSize(bigSize) {}
     virtual ~Card_item() = default;
 
 

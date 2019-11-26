@@ -9,7 +9,7 @@
 class Card_race : public Card_base
 {
 public:
-    Card_race(std::string name) : Card_base(name)
+    Card_race(std::string ID, std::string name) : Card_base(ID, name)
     {
         if (name == "Dwarf")
             raceType = Race::RaceType::DWARF;

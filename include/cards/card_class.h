@@ -9,7 +9,7 @@
 class Card_class : public Card_base
 {
 public:
-    Card_class(std::string name) : Card_base(name)
+    Card_class(std::string ID, std::string name) : Card_base(ID, name)
     {
         if (name == "Cleric")
             classType = Class::ClassType::CLERIC;
