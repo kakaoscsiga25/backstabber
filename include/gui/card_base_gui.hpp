@@ -5,6 +5,9 @@
 
 #include <QSize>
 #include <QWidget>
+#include <QDrag>
+#include <QLabel>
+#include <QMimeData>
 #include <QPainter>
 #include <QPaintEvent>
 #include <iostream>
@@ -27,9 +30,9 @@ public:
         QPainter painter(this);
         QImage image;
         if (card->cardName == "alma")
-            image.load("/home/gergo/dev/backstabber/data/cards/DMO_TI_01.png");
+            image.load("../../data/cards/DMO_TI_01.png");
         else
-            image.load("/home/gergo/dev/backstabber/data/cards/DMO_T_BG.png");
+            image.load("../../data/cards/DMO_T_BG.png");
         image = image.scaled(SIZE_OF_CARD); // resize
         painter.drawImage(0, 0, image);
     }
@@ -41,21 +44,35 @@ public:
         {
             position = pos();
             dragStart = event->globalPos();
+
+            raise();
         }
     }
     void mouseMoveEvent(QMouseEvent* event) override
     {
-//        move(event->globalPos() - dragStart + position);
+        move(event->globalPos() - dragStart + position);
+        this->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     }
     void mouseReleaseEvent(QMouseEvent* event) override
     {
-        std::cerr << "REL on " << card->cardName << "\n";
-//        parent()->asdasd();
-//        event->
-//        parent->mouseReleaseEvent(event);
-        emit clicked(event->globalPos());
+        QWidget* window = dynamic_cast<QWidget*>(parent());
+        if (window)
+        {
+            Card_base_gui *child = dynamic_cast<Card_base_gui*>(window->childAt(this->pos() + event->pos()));
+            if (child)
+                std::cerr << "REL on " << child->card->cardName << "\n";
+            else
+                std::cerr << "no \n";
+        }
+
+        this->setAttribute(Qt::WA_TransparentForMouseEvents, false);
     }
 
+    void dropEvent(QDropEvent *event) override
+    {
+        std::cerr << "drop on " << card->cardName << "\n";
+
+    }
 
 
 
