@@ -46,5 +46,25 @@ void Card_base_gui::mousePressEvent(QMouseEvent* event)
 //        std::cerr << window << " " << lastParent << " " << windowPos.x() << " " << windowPos.y() << "\n";
 
         raise();
+
+        this->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     }
+}
+
+void Card_base_gui::mouseReleaseEvent(QMouseEvent* event)
+{
+    QWidget* window = dynamic_cast<QWidget*>(parent());
+    if (window)
+    {
+        QFrame *area = dynamic_cast<QFrame*>(window->childAt(this->pos() + event->pos()));
+        if (area)
+        {
+            std::cerr << "REL on " << area->objectName().toStdString() << "\n";
+            emit dropped();
+        }
+//        else
+//            std::cerr << "no \n";
+    }
+
+    this->setAttribute(Qt::WA_TransparentForMouseEvents, false);
 }

@@ -31,8 +31,6 @@ PlayerWindow::PlayerWindow(Player* player, QWidget *parent) : player(player), QM
     }
     if (!handArea || !monsterArea || !itemsArea)
         throw std::runtime_error("Some area not found!");
-
-//    connect(this, &PlayerWindow::refresh, this, &PlayerWindow::stateChanged, Qt::ConnectionType::QueuedConnection);
 }
 
 PlayerWindow::~PlayerWindow()
@@ -61,22 +59,39 @@ void PlayerWindow::mouseMoveEvent(QMouseEvent* event)
 void PlayerWindow::stateChanged()
 {
     // Gui logic
-//    std::cerr << std::this_thread::get_id() << "\n";
-    objects.clear();
 
     // HACK
-    QPoint handAreaPos      = QPoint( 20, 10);
-    QPoint itemsAreaPos     = QPoint( 20, height() / 3. * 1 + 10);
-    QPoint monsterAreaPos   = QPoint( 20, height() / 3. * 0 + 10);
+    QPoint startPoint = QPoint(20, 40);
+//    int offsetY = 220;
+    int offsetY = ((height() - startPoint.y()) / 3);
 
-    std::cerr << height() << "\n";
-
-    const int X_DISTANCE = 50;
-    for (auto& hand_card : player->cards_hand)
+    QPoint actCardPos = startPoint;
+    const int X_DISTANCE = 20; // between cards
+    for (auto& card_bunch : { {}, player->cards_table, player->cards_hand } )
     {
-        std::shared_ptr<QWidget> card(new Card_base_gui(hand_card, this));
-        card->move(handAreaPos);
-        objects.push_back(card);
-        handAreaPos.setX(handAreaPos.x() + Card_base_gui::SIZE_OF_CARD.width() + X_DISTANCE);
+        for (auto& base_card : card_bunch)
+        {
+            Card_base_gui* card = exists(base_card);
+            if (!card)
+            {
+                // Create
+                Card_base_gui* cbg = new Card_base_gui(base_card, this);
+                QObject::connect(cbg, &Card_base_gui::dropped, this, &PlayerWindow::stateChanged);
+                cards.push_back(cbg);
+                card = cards.back();
+                Logger::getLogger()->log(LogType::DEBUG, "Card GUI " + base_card->cardName + " is created");
+            }
+            card->move(actCardPos);
+            actCardPos.setX(actCardPos.x() + Card_base_gui::SIZE_OF_CARD.width() + X_DISTANCE);
+        }
+        actCardPos.setY(actCardPos.y() + offsetY);
     }
+}
+
+Card_base_gui* PlayerWindow::exists(Card_base* card) const
+{
+    for (auto& c : cards)
+        if (c->card == card)
+            return c;
+    return nullptr;
 }

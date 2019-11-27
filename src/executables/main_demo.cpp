@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QFrame>
+#include <unistd.h>
 
 #include "deck.hpp"
 #include "gui/player_window.hpp"
@@ -20,6 +21,7 @@ int main(int argc, char **argv)
     PlayerWindow window(&player);
     window.stateChanged(); // init
     window.show();
+
 
 /*
     for (int i=0;i<5;i++)

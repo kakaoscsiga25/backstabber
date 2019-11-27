@@ -22,7 +22,7 @@ public:
 
     Card_base_gui(Card_base* card, QWidget* parent = nullptr) : QWidget(parent), card(card)
     {
-        lastParent = parent;
+//        lastParent = parent;
         resize(SIZE_OF_CARD);
         setAcceptDrops(true);
     }
@@ -46,39 +46,26 @@ public:
     void mouseMoveEvent(QMouseEvent* event) override
     {
         move(event->globalPos() - dragStart + position);
-        this->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+//        this->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     }
-    void mouseReleaseEvent(QMouseEvent* event) override
-    {
-        QWidget* window = dynamic_cast<QWidget*>(parent());
-        if (window)
-        {
-            QFrame *child = dynamic_cast<QFrame*>(window->childAt(this->pos() + event->pos()));
-            if (child)
-                std::cerr << "REL on " << child->objectName().toStdString() << "\n";
-            else
-                std::cerr << "no \n";
-        }
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
-        this->setAttribute(Qt::WA_TransparentForMouseEvents, false);
-    }
+//    void dropEvent(QDropEvent *event) override
+//    {
+//        std::cerr << "drop on " << card->cardName << "\n";
 
-    void dropEvent(QDropEvent *event) override
-    {
-        std::cerr << "drop on " << card->cardName << "\n";
-
-    }
+//    }
 
 
-protected:
     Card_base* card;
 
+protected:
     QPoint position;
     QPoint dragStart;
-    QObject* lastParent;
+//    QObject* lastParent;
 
 signals:
-    void clicked(QPoint);
+    void dropped();
 
 //public slots:
 };

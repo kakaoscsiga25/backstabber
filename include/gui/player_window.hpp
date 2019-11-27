@@ -29,14 +29,15 @@ public:
     void resizeEvent(QResizeEvent* event)
     {
        QMainWindow::resizeEvent(event);
-//       emit refresh();
        stateChanged();
     }
 
 private:
+    Card_base_gui* exists(Card_base* card) const;
+
     Player* player;
     Fight* fight = nullptr;
-    std::vector<std::shared_ptr<QWidget> > objects;
+    std::vector<Card_base_gui*> cards;
 
     Ui::PlayerWindow *ui;
     QFrame* handArea = nullptr;
@@ -44,7 +45,7 @@ private:
     QFrame* monsterArea = nullptr;
 
 signals:
-    void refresh();
+//    void refresh();
 
 public slots:
     void stateChanged();
