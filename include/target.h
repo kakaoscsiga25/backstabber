@@ -16,6 +16,7 @@ public:
     virtual ~Target() {}
 
     std::string getName() const { return name; }
+    int getLevel() const { return level; }
 
     virtual int attackPower() const { return level; }
 

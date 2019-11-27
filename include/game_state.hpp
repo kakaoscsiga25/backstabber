@@ -20,7 +20,7 @@ public:
 //    std::vector<Player*> players;
     Player* player;
     Deck* deck = nullptr;
-//    Fight* fight = nullptr;
+    Fight* fight = nullptr;
 };
 
 

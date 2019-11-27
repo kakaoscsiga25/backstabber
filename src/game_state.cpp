@@ -8,6 +8,6 @@ GameState::~GameState()
 //        delete player;
     }
 //    players.clear();
-    delete deck;
+//    delete deck;
 //    delete fight;
 }
