@@ -19,8 +19,10 @@ class Player : public Target
 {
     Q_OBJECT
 public:
-    Player(std::string name, int level = 100) : Target("'"+name+"'", level) {}
+    Player(std::string name, int level = 100) : Target(name, level) {}
     virtual ~Player() = default;
+
+    void playCard(Card_item* card, Target* target);
 
     void init(Deck* deck);
 
@@ -56,6 +58,7 @@ protected:
 
 
 signals:
+    void playCard_sign(Player* player, Card_item* card, Target* target);
     void usedCard(Card_item* card);
 };
 

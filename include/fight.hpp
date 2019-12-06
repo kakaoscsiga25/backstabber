@@ -15,7 +15,7 @@ class Deck;
 
 struct Fight
 {
-    Fight(Monster* m, Player* player, Deck* deck) : monster(m), player(player), deck(deck) {}
+    Fight(Monster* m, Player* player, Deck* deck);
 
     void doFight();
 

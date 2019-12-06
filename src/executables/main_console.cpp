@@ -23,44 +23,25 @@ int main()
 
     // Do some player action
     sleep(1);
-    gc.playCardRequest(p->cards_hand.front(), p); // try to play first card (put  to table)
+    Logger::getLogger()->log(LogType::DEBUG, "MAIN: Try play: " + p->cards_hand.front()->cardName);
+    p->playCard(p->cards_hand.front(), p); // try to play first card (put  to table)
     sleep(1);
-    gc.playCardRequest(p->cards_hand.front(), p); // try to play first card (put  to table)
+    Logger::getLogger()->log(LogType::DEBUG, "MAIN: Try play: " + p->cards_hand.front()->cardName);
+    p->playCard(p->cards_hand.front(), p); // try to play first card (put  to table)
 
     while(!gc.state.fight)
     {
         sleep(1);
     }
-    gc.playCardRequest(p->cards_hand.front(), gc.state.fight->monster); // play first hand card to monster
+    Logger::getLogger()->log(LogType::DEBUG, "MAIN: Try play: " + p->cards_hand.front()->cardName);
+    p->playCard(p->cards_hand.front(), p); // try to play first card (put  to table)
     sleep(1);
-    gc.playCardRequest(p->cards_table.front(), gc.state.fight->monster); // play first table card to monster
+    Logger::getLogger()->log(LogType::DEBUG, "MAIN: Try play: " + p->cards_hand.front()->cardName);
+    p->playCard(p->cards_hand.front(), p); // try to play first card (put  to table)
 
-    sleep(5);
+    Logger::getLogger()->log(LogType::DEBUG, "MAIN: Wait to game controll thread...");
+    gc.wait();
 
-
-
-
-//    Player p("En", 1);
-//    Deck deck;
-//    QObject::connect(&p, &Player::usedCard, &deck, &Deck::discard);
-
-//    p.init(&deck);
-
-
-//    for (int i=0;i<5;i++)
-//    {
-//        if (p.dead)
-//            p.init(&deck);
-
-//        // Try put to table all card
-//        for (size_t i = 0; i < p.cards_hand.size();)
-//            if (!p.putToTable(p.cards_hand.at(i)))
-//                i++;
-
-//        Card_monster* monsterCard = deck.pullDoorCard();
-//        monsterCard->fightWithMonster(&p, &deck);
-//    }
-
-
+    Logger::getLogger()->log(LogType::DEBUG, "MAIN: Finished");
     return 0;
 }

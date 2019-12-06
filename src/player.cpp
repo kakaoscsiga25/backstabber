@@ -3,6 +3,16 @@
 #include "logger.h"
 
 
+void Player::playCard(Card_item* card, Target* target)
+{
+    // Remove
+    bool removed = removeFromHand(card);
+    if (!removed)
+        removed = removeFromTable(card);
+    if (removed)
+        emit playCard_sign(this, card, target);
+}
+
 void Player::init(Deck* deck)
 {
     // Draw new cards
@@ -36,8 +46,8 @@ void Player::levelChange(int levelChange)
 
 bool Player::putToTable(Card_item* card)
 {
-    if (!cardInHand(card)) // card is not in hand (something went wrong)
-        return false;
+//    if (!cardInHand(card)) // card is not in hand (something went wrong)
+//        return false;
 
     // Check big size item rule
     if (card->bigSize)
@@ -49,8 +59,8 @@ bool Player::putToTable(Card_item* card)
             }
 
     // Put to table
-    if (!removeFromHand(card)) // cant remove from hand (something went wrong)
-        return false;
+//    if (!removeFromHand(card)) // cant remove from hand (something went wrong)
+//        return false;
     cards_table.push_back(card);
 
     // Try to activate

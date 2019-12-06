@@ -2,6 +2,11 @@
 #include <unistd.h>
 
 
+Fight::Fight(Monster* m, Player* player, Deck* deck) : monster(m), player(player), deck(deck)
+{
+    Logger::getLogger()->log(LogType::DEBUG, "Fight initialized between " + player->name + " (player) and " + m->name + " (monster).");
+}
+
 void Fight::doFight()
 {
     int playerAttack = player->attackPower();

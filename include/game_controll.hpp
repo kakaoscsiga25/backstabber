@@ -10,6 +10,7 @@
 
 struct CardCommand
 {
+    Player* sender;
     Card_base* card;
     Target* target;
 };
@@ -26,6 +27,9 @@ public:
 
     bool legalStep(Card_base* card, Target* target) const;
 
+    void wait() const;
+
+
 protected:
     void addToCardsQueue(const CardCommand& cardWrap);
     void changeWatcher(int waitTime);
@@ -37,7 +41,7 @@ protected:
 
 public slots:
     void start();
-    void playCardRequest(Card_base* card, Target* target);
+    void playCard(Player* player, Card_base* card, Target* target);
 };
 
 
