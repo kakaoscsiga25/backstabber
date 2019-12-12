@@ -49,13 +49,13 @@ public:
     Class getPlayerClass() const { return playerClass; }
     void changeClass(Class newClass);
 
+    bool cardInHand(Card_item* card) const;
+    bool cardOnTable(Card_item* card) const;
 
     std::vector<Card_item*> cards_hand;
     std::vector<Card_item*> cards_table;
 
 protected:
-    bool cardInHand(Card_item* card) const;
-    bool cardOnTable(Card_item* card) const;
     bool removeFromHand(Card_item* card);
     bool removeFromTable(Card_item* card);
 

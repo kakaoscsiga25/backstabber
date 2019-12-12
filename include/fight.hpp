@@ -29,6 +29,8 @@ public:
 
     void evaluateFight();
 
+    Monster* getMonster() const { return monster; }
+
 protected:
     bool tryToEscape(Player* p) const;
 

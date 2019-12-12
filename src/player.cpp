@@ -27,7 +27,7 @@ void Player::init(Deck* deck)
 //        if (card)
 //            cards_hand.push_back(card);
 //    }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 15; i++)
     {
         Card_item* card = deck->pullTreasureCard();
         if (card)
@@ -53,6 +53,9 @@ bool Player::putToTable(Card_item* card)
 {
 //    if (!cardInHand(card)) // card is not in hand (something went wrong)
 //        return false;
+
+    if (card->activated) // already activated
+        return false;
 
     // Check big size item rule
     if (card->bigSize)

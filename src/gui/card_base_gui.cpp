@@ -31,8 +31,8 @@ void Card_base_gui::mousePressEvent(QMouseEvent* event)
 {
     if( event->buttons() & Qt::LeftButton)
     {
-        position = pos();
-        dragStart = event->globalPos();
+        relativeDragStartPosition = pos();
+        globalDragStartPosition = event->globalPos();
 
 //        QPoint windowPos = pos();
 //        PlayerWindow* window = dynamic_cast<PlayerWindow*>(calcPos(parentWidget(), "PlayerWindow", windowPos));
@@ -59,12 +59,34 @@ void Card_base_gui::mouseReleaseEvent(QMouseEvent* event)
         QFrame *area = dynamic_cast<QFrame*>(window->childAt(this->pos() + event->pos()));
         if (area)
         {
-            std::cerr << "REL on " << area->objectName().toStdString() << "\n";
-            emit dropped();
+            Target target;
+            if (area->objectName() == "ItemsArea")
+                target = Target::SELF;
+            else if (area->objectName() == "MonsterArea")
+                target = Target::MONSTER;
+            // else: No target
+            if (target != Target::UNK)
+            {
+                emit dropped(card, target);
+                return;
+            }
         }
-//        else
-//            std::cerr << "no \n";
     }
 
+    move(relativeDragStartPosition); // reset position (can be changed at refresh [if happens])
+
     this->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+}
+
+
+void Card_base_gui::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    Card_item* cardItem = dynamic_cast<Card_item*>(card);
+    if (cardItem)
+    {
+        if (cardItem->activated)
+            cardItem->activated = false;
+        else
+            emit dropped(card, Target::SELF);
+    }
 }

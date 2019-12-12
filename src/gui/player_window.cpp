@@ -31,6 +31,8 @@ PlayerWindow::PlayerWindow(Player* player, QWidget *parent) : player(player), QM
     }
     if (!handArea || !monsterArea || !itemsArea)
         throw std::runtime_error("Some area not found!");
+
+//    connect(player, &Player::playCard_sign, this, &PlayerWindow::stateChanged);
 }
 
 PlayerWindow::~PlayerWindow()
@@ -56,6 +58,31 @@ void PlayerWindow::mouseMoveEvent(QMouseEvent* event)
 
 }
 
+void PlayerWindow::playedGuiCard(Card_base* card, Card_base_gui::Target target)
+{
+    // Emit if there is a card
+    if (card && target != Card_base_gui::Target::UNK)
+    {
+        Target* t = nullptr;
+        Card_item* cardItem = dynamic_cast<Card_item*>(card);
+        if (target == Card_base_gui::Target::SELF)
+        {
+            t = player;
+            if (cardItem && player->cardOnTable(cardItem))
+            {
+                if (!cardItem->activated)
+                    player->tryActivate(cardItem);
+            }
+        }
+        else if (fight && target == Card_base_gui::Target::MONSTER)
+            t = fight->getMonster();
+        if (cardItem && t)
+            player->playCard(cardItem, t);
+    }
+
+    stateChanged();
+}
+
 void PlayerWindow::stateChanged()
 {
     // Gui logic
@@ -69,6 +96,7 @@ void PlayerWindow::stateChanged()
     const int X_DISTANCE = 20; // between cards
     for (auto& card_bunch : { {}, player->cards_table, player->cards_hand } )
     {
+        actCardPos.setX(startPoint.x());
         for (auto& base_card : card_bunch)
         {
             Card_base_gui* card = exists(base_card);
@@ -76,7 +104,7 @@ void PlayerWindow::stateChanged()
             {
                 // Create
                 Card_base_gui* cbg = new Card_base_gui(base_card, this);
-                QObject::connect(cbg, &Card_base_gui::dropped, this, &PlayerWindow::stateChanged);
+                QObject::connect(cbg, &Card_base_gui::dropped, this, &PlayerWindow::playedGuiCard);
                 cards.push_back(cbg);
                 card = cards.back();
                 Logger::getLogger()->log(LogType::DEBUG, "Card GUI " + base_card->cardName + " is created");

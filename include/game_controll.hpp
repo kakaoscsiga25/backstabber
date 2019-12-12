@@ -29,6 +29,7 @@ public:
 
     void wait() const;
 
+    const GameState* getState() const { return &state; }
 
 protected:
     void addToCardsQueue(const CardCommand& cardWrap);
@@ -38,6 +39,8 @@ protected:
     QThread* gameThread;
     std::deque<CardCommand> cardsQueue;
 
+signals:
+    void somethingChanged();
 
 public slots:
     void start();

@@ -124,6 +124,7 @@ void GameControll::changeWatcher(int waitTime)
             start = std::chrono::steady_clock::now();
             if (state.fight)
                 state.fight->printStatus();
+            emit somethingChanged();
         }
     }
     Logger::getLogger()->log(LogType::DEBUG, "Wait is ended");
@@ -139,6 +140,8 @@ void GameControll::start()
     int turnCounter = 1;
     while(state.player->getLevel() < 10)
     {
+        changeWatcher(1); continue; // hack
+
         /// Revive
         if (state.player->isDead())
             state.player->init(state.deck);

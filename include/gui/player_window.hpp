@@ -48,6 +48,7 @@ signals:
 //    void refresh();
 
 public slots:
+    void playedGuiCard(Card_base* card, Card_base_gui::Target target);
     void stateChanged();
 };
 
