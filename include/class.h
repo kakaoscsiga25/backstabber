@@ -7,20 +7,32 @@ class Class
 public:
     enum ClassType
     {
-        NONE    = 0,
-        CLERIC  = 1,
-        THIEF   = 2,
-        WARRIOR = 4,
-        WIZARD  = 8,
+        UNKNOWN         = 0,
+        NONE            = 1,
+        CLERIC          = 2,
+        THIEF           = 4,
+        WARRIOR         = 8,
+        WIZARD          = 16,
+
+        ALL             = NONE | CLERIC | THIEF | WARRIOR | WIZARD,
+
+        EXCEPT_CLERIC   = ALL - CLERIC,
+        EXCEPT_THIEF    = ALL - THIEF,
+        EXCEPT_WARRIOR  = ALL - WARRIOR,
+        EXCEPT_WIZARD   = ALL - WIZARD,
     };
 
     Class(ClassType ct = ClassType::NONE) {}
 
-    // TODO: complete the class events
 
-    bool isWarrior() const
+
+    bool is(const ClassType& cl) const
     {
-        return class_ & ClassType::WARRIOR;
+        return class_ & cl;
+    }
+    bool isNot(const ClassType& cl) const
+    {
+        return !(class_ & cl);
     }
 
     ClassType class_;

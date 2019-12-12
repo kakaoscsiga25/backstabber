@@ -13,13 +13,14 @@
 
 struct Deck;
 struct Card_base;
+class Target;
 
 
 class Player : public Target
 {
     Q_OBJECT
 public:
-    Player(std::string name, int level = 100) : Target(name, level) {}
+    Player(std::string name, int level = 100);
     virtual ~Player() = default;
 
     void playCard(Card_item* card, Target* target);
@@ -35,23 +36,32 @@ public:
     bool tryActivate(Card_item* card) const;
     bool deActivate(Card_item* card) const;
 
+    void checkItems();
+
     bool sell(Card_item* card);
 
     virtual int attackPower() const;
 
     void die();
 
+    bool isDead() const { return dead; }
+
+    Class getPlayerClass() const { return playerClass; }
+    void changeClass(Class newClass);
+
 
     std::vector<Card_item*> cards_hand;
     std::vector<Card_item*> cards_table;
 
-    Class playerClass;
 protected:
     bool cardInHand(Card_item* card) const;
     bool cardOnTable(Card_item* card) const;
     bool removeFromHand(Card_item* card);
     bool removeFromTable(Card_item* card);
 
+    bool canBeActive(const Card_item* card) const;
+
+    Class playerClass;
 
     int money = 0;
     bool dead = false;

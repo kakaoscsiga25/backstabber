@@ -13,11 +13,21 @@ class Player;
 class Deck;
 
 
-struct Fight
+class Fight : public QObject
 {
-    Fight(Monster* m, Player* player, Deck* deck);
+    Q_OBJECT
 
-    void doFight();
+public:
+    Fight(Monster* m, Player* player, Deck* deck);
+    ~Fight();
+
+    void doFight(); // obsoleted
+
+    void fightStatus(int& playerAttack, int& monsterAttack) const;
+
+    void printStatus() const;
+
+    void evaluateFight();
 
 protected:
     bool tryToEscape(Player* p) const;
@@ -28,6 +38,9 @@ protected:
     Deck* deck;
 
     std::deque<std::pair<Card_effect*, Target*> > playedCards;
+
+signals:
+    void discard(Card_base*);
 
 public slots:
     void playCard(Card_effect* card, Target* target) { playedCards.push_back(std::pair<Card_effect*, Target*>(card, target)); }

@@ -9,6 +9,7 @@
 
 
 class Card_monster;
+class Card_item;
 
 
 class Deck : public QObject

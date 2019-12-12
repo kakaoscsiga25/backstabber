@@ -24,7 +24,7 @@ GameControll::GameControll(int numberOfPlayers)
     state.player = p;
 
     connect(state.player, &Player::playCard_sign, this, &GameControll::playCard, Qt::ConnectionType::DirectConnection);
-    connect(state.player, &Player::usedCard, state.deck, &Deck::discard);
+    connect(state.player, &Player::usedCard, state.deck, &Deck::discard, Qt::ConnectionType::DirectConnection);
 
     // Start internal thread (game logic thread)
     gameThread = new QThread();
@@ -61,7 +61,7 @@ void GameControll::addToCardsQueue(const CardCommand& cardWrap)
 {
     // TODO mutexing
     cardsQueue.push_back(cardWrap);
-    Logger::getLogger()->log(LogType::DEBUG, "New carded added to card queue, size: " + std::to_string(cardsQueue.size()));
+    Logger::getLogger()->log(LogType::DUMP, "New carde added to card queue, size: " + std::to_string(cardsQueue.size()));
 }
 
 void GameControll::changeWatcher(int waitTime)
@@ -79,8 +79,18 @@ void GameControll::changeWatcher(int waitTime)
             // Process card
             if (legalStep(cardWrap.card, cardWrap.target))
             {
-                Card_item* cardItem = dynamic_cast<Card_item*>(cardWrap.card);
-                if(cardItem)
+                if (Card_effect* cardEffect = dynamic_cast<Card_effect*>(cardWrap.card))
+                {
+                    if (Fight* fight = state.fight)
+                    {
+                        fight->playCard(cardEffect, cardWrap.target);
+                        gameChanged = true;
+                    }
+                    else
+                        Logger::getLogger()->log(LogType::INFO, "Can not play effect card out of fight!");
+
+                }
+                if (Card_item* cardItem = dynamic_cast<Card_item*>(cardWrap.card))
                 {
                     if (Player* target = dynamic_cast<Player*>(cardWrap.target))
                     {
@@ -112,6 +122,8 @@ void GameControll::changeWatcher(int waitTime)
         {
             Logger::getLogger()->log(LogType::DEBUG, "Game status changed, restart wait timer...");
             start = std::chrono::steady_clock::now();
+            if (state.fight)
+                state.fight->printStatus();
         }
     }
     Logger::getLogger()->log(LogType::DEBUG, "Wait is ended");
@@ -127,21 +139,27 @@ void GameControll::start()
     int turnCounter = 1;
     while(state.player->getLevel() < 10)
     {
-        // Pre turn
+        /// Revive
+        if (state.player->isDead())
+            state.player->init(state.deck);
+
+        /// Pre turn
         Logger::getLogger()->log(LogType::PLAY, "Turn " + std::to_string(turnCounter) + " pre drawing phase...");
         changeWatcher(2);
 
-        // Draw monster
+        /// Draw monster
         Logger::getLogger()->log(LogType::PLAY, "Monster drawing...");
         Card_monster* monsterCard = state.deck->pullDoorCard();
         state.fight = new Fight(&(monsterCard->monster), state.player, state.deck);
         changeWatcher(2);
-
+        // Evaluate fight
+        state.fight->evaluateFight();
         // Remove fight
-
         Logger::getLogger()->log(LogType::DEBUG, "Delete and remove fight from state...");
         delete state.fight;
         state.fight = nullptr;
+        state.deck->discard(monsterCard);
+        monsterCard = nullptr;
 
         turnCounter++;
     }

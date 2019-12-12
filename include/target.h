@@ -13,7 +13,7 @@ class Target : public QObject
     Q_OBJECT
 public:
     Target(std::string name, int level) : name(name), level(level) {}
-    virtual ~Target() {}
+    virtual ~Target() = default;
 
     std::string getName() const { return name; }
     int getLevel() const { return level; }

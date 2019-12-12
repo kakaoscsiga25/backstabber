@@ -5,6 +5,16 @@
 Fight::Fight(Monster* m, Player* player, Deck* deck) : monster(m), player(player), deck(deck)
 {
     Logger::getLogger()->log(LogType::DEBUG, "Fight initialized between " + player->name + " (player) and " + m->name + " (monster).");
+
+    connect(this, &Fight::discard, deck, &Deck::discard);
+    printStatus();
+}
+Fight::~Fight()
+{
+    for (auto& c : playedCards)
+        emit discard(c.first);
+    playedCards.clear();
+    Logger::getLogger()->log(LogType::DEBUG, "Fight ended, card discarded");
 }
 
 void Fight::doFight()
@@ -43,7 +53,46 @@ void Fight::doFight()
 
     // Final evaluation
     bool defeat = playerAttack > monsterAttack;
-    if (!defeat && player->playerClass.isWarrior() && playerAttack == monsterAttack) // warrior can beat the monster with equal strength
+    if (!defeat && player->getPlayerClass().is(Class::ClassType::WARRIOR) && playerAttack == monsterAttack) // warrior can beat the monster with equal strength
+        defeat = true;
+
+    if (defeat)
+    {
+        Logger::getLogger()->log(LogType::INFO, "Monster " + monster->name + " is defeated by " + player->name);
+        monster->reward(player, deck);
+    }
+    else
+    {
+        bool escaped = tryToEscape(player);
+
+        if (!escaped)
+        {
+            Logger::getLogger()->log(LogType::INFO, "Player " + player->name + " is defeated and can\'t escape. Bad thing comes...");
+            monster->badStuff(player);
+        }
+    }
+}
+
+void Fight::fightStatus(int& playerAttack, int& monsterAttack) const
+{
+    playerAttack = player->attackPower() + player->evaluateCardEffects();
+    monsterAttack = monster->attackPower() + monster->evaluateCardEffects();
+}
+
+void Fight::printStatus() const
+{
+    int playerAttack, monsterAttack;
+    fightStatus(playerAttack, monsterAttack);
+    Logger::getLogger()->log(LogType::INFO, "Player vs. Monster: " + std::to_string(playerAttack) + ":" + std::to_string(monsterAttack));
+}
+
+void Fight::evaluateFight()
+{
+    // Final evaluation
+    int playerAttack, monsterAttack;
+    fightStatus(playerAttack, monsterAttack);
+    bool defeat = playerAttack > monsterAttack;
+    if (!defeat && player->getPlayerClass().is(Class::ClassType::WARRIOR) && playerAttack == monsterAttack) // warrior can beat the monster with equal strength
         defeat = true;
 
     if (defeat)

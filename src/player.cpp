@@ -3,6 +3,11 @@
 #include "logger.h"
 
 
+Player::Player(std::string name, int level) : Target(name, level)
+{
+    playerClass.class_ = Class::ClassType::NONE;
+}
+
 void Player::playCard(Card_item* card, Target* target)
 {
     // Remove
@@ -84,6 +89,11 @@ bool Player::tryActivate(Card_item* card) const
         return false;
     }
 
+    bool canActivate = canBeActive(card);
+    if (!canActivate)
+        return false;
+
+    // Hand check
     if (card->type == Card_item::ItemType::NONE)
     {
         card->activated = true;
@@ -109,7 +119,7 @@ bool Player::tryActivate(Card_item* card) const
                 activeSameItemCounter++;
     }
 
-    bool canActivate = activeSameItemCounter == 0;
+    canActivate = activeSameItemCounter == 0;
     if (!canActivate && weapon)
     {
         // Two one handed?
@@ -132,6 +142,17 @@ bool Player::deActivate(Card_item* card) const
         return false;
     card->activated = false;
     return true;
+}
+
+void Player::checkItems()
+{
+    for (auto& cardOnTable : cards_table)
+        if (cardOnTable->activated)
+            if (!canBeActive(cardOnTable))
+            {
+                cardOnTable->activated = false;
+                Logger::getLogger()->log(LogType::INFO, "Card " + cardOnTable->cardName + " is inactivated!");
+            }
 }
 
 bool Player::sell(Card_item* card)
@@ -186,6 +207,12 @@ void Player::die()
     Logger::getLogger()->log(LogType::INFO, "Player " + name + " is died.");
 }
 
+void Player::changeClass(Class newClass)
+{
+    playerClass = newClass;
+    checkItems();
+}
+
 
 bool Player::cardInHand(Card_item* card) const
 {
@@ -224,4 +251,13 @@ bool Player::removeFromTable(Card_item* card)
         }
     }
     return false;
+}
+
+bool Player::canBeActive(const Card_item* card) const
+{
+    bool ok = true;
+    // Class check
+    ok = ok && playerClass.is(card->canUsedBy);
+
+    return ok;
 }

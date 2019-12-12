@@ -4,6 +4,7 @@
 #include <string>
 
 #include "card_base.h"
+#include "class.h"
 
 
 class Card_item : public Card_base
@@ -20,16 +21,18 @@ public:
         WEAPON      = ONE_HAND | TWO_HAND,
     };
 
-    Card_item(std::string ID, std::string name, int bonus = 0, int price = 0, ItemType type = NONE, bool bigSize = false) :
-        Card_base(ID, name), bonus(bonus), price(price), type(type), bigSize(bigSize) {}
+    Card_item(std::string ID, std::string name, int bonus = 0, int price = 0, ItemType type = NONE, bool bigSize = false,
+              Class::ClassType canUsedBy = Class::ClassType::ALL) :
+        Card_base(ID, name), bonus(bonus), price(price), type(type), bigSize(bigSize), canUsedBy(canUsedBy) {}
     virtual ~Card_item() = default;
-
 
     int bonus;
     int price;
     ItemType type;
     bool activated = false; // on the table
     bool bigSize;
+
+    Class::ClassType canUsedBy;
 };
 
 
