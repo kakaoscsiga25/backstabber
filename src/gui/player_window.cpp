@@ -10,8 +10,13 @@
 #include <thread>
 
 
-PlayerWindow::PlayerWindow(Player* player, QWidget *parent) : player(player), QMainWindow(parent), ui(new Ui::PlayerWindow)
+PlayerWindow::PlayerWindow(GameControll* gc, QWidget *parent) : QMainWindow(parent), ui(new Ui::PlayerWindow)
 {
+    player = gc->state.player;
+
+    connect(gc, &GameControll::fightStarted, this, &PlayerWindow::fightStarted, Qt::ConnectionType::DirectConnection);
+    connect(gc, &GameControll::fightEnded, this, &PlayerWindow::fightEnded, Qt::ConnectionType::DirectConnection);
+
     ui->setupUi(this);
 
     // Set areas pointers
@@ -46,6 +51,14 @@ void PlayerWindow::paintEvent(QPaintEvent* event)
     QPainter painter(this);
     for (QFrame* frame : {handArea, itemsArea, monsterArea})
         painter.drawText(frame->pos().x()+10, frame->pos().y()+20, frame->objectName());
+
+    // Fight monster visualization
+    if (fight)
+    {
+        std::string monsterName = fight->getMonster()->name;
+        QPainter painter(this);
+        painter.drawText(monsterArea->pos().x()+100, monsterArea->pos().y()+50, QString::fromStdString(monsterName));
+    }
 }
 
 void PlayerWindow::mousePressEvent(QMouseEvent* event)

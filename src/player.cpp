@@ -201,9 +201,15 @@ int Player::attackPower() const
 void Player::die()
 {
     for (const auto& c : cards_hand)
+    {
+        c->activated = false;
         emit usedCard(c);
+    }
     for (const auto& c : cards_table)
+    {
+        c->activated = false;
         emit usedCard(c);
+    }
     cards_hand.clear();
     cards_table.clear();
     dead = true;

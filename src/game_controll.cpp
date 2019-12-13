@@ -66,6 +66,8 @@ void GameControll::addToCardsQueue(const CardCommand& cardWrap)
 
 void GameControll::changeWatcher(int waitTime)
 {
+    emit somethingChanged();
+
     auto start = std::chrono::steady_clock::now();
     while (std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - start).count() < waitTime)
     {
@@ -140,7 +142,7 @@ void GameControll::start()
     int turnCounter = 1;
     while(state.player->getLevel() < 10)
     {
-        changeWatcher(1); continue; // hack
+//        changeWatcher(1); continue; // hack
 
         /// Revive
         if (state.player->isDead())
@@ -154,11 +156,13 @@ void GameControll::start()
         Logger::getLogger()->log(LogType::PLAY, "Monster drawing...");
         Card_monster* monsterCard = state.deck->pullDoorCard();
         state.fight = new Fight(&(monsterCard->monster), state.player, state.deck);
-        changeWatcher(2);
+        emit fightStarted(state.fight);
+        changeWatcher(5);
         // Evaluate fight
         state.fight->evaluateFight();
         // Remove fight
         Logger::getLogger()->log(LogType::DEBUG, "Delete and remove fight from state...");
+        emit fightEnded();
         delete state.fight;
         state.fight = nullptr;
         state.deck->discard(monsterCard);

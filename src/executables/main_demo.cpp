@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 
     Player* p = gc.getState()->player;
 
-    PlayerWindow window(p);
+    PlayerWindow window(&gc);
 
     QObject::connect(&gc, &GameControll::somethingChanged, &window, &PlayerWindow::stateChanged);
 

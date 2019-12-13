@@ -19,6 +19,9 @@ struct CardCommand
 class GameControll : public QObject
 {
     Q_OBJECT
+
+    friend class PlayerWindow;
+
 public:
     GameControll(int numberOfPlayers = 2);
     virtual ~GameControll();
@@ -41,6 +44,8 @@ protected:
 
 signals:
     void somethingChanged();
+    void fightStarted(Fight*);
+    void fightEnded();
 
 public slots:
     void start();

@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "gui/card_base_gui.hpp"
-#include "fight.hpp"
+#include "game_controll.hpp"
 
 
 
@@ -18,7 +18,7 @@ class PlayerWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    PlayerWindow(Player* player, QWidget *parent = nullptr);
+    PlayerWindow(GameControll* gc, QWidget *parent = nullptr);
     ~PlayerWindow();
 
     void paintEvent(QPaintEvent* event);
@@ -50,6 +50,9 @@ signals:
 public slots:
     void playedGuiCard(Card_base* card, Card_base_gui::Target target);
     void stateChanged();
+
+    void fightStarted(Fight* f) { fight = f; }
+    void fightEnded() { fight = nullptr; }
 };
 
 #endif // PLAYER_WINDOW_HPP
