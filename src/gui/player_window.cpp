@@ -71,7 +71,12 @@ void PlayerWindow::playedGuiCard(Card_base* card, Card_base_gui::Target target)
             if (cardItem && player->cardOnTable(cardItem))
             {
                 if (!cardItem->activated)
+                {
+                    Logger::getLogger()->log(LogType::DUMP, "Try activate " + cardItem->cardName);
                     player->tryActivate(cardItem);
+                    update();
+                }
+                return;
             }
         }
         else if (fight && target == Card_base_gui::Target::MONSTER)
@@ -114,6 +119,8 @@ void PlayerWindow::stateChanged()
         }
         actCardPos.setY(actCardPos.y() + offsetY);
     }
+
+    update();
 }
 
 Card_base_gui* PlayerWindow::exists(Card_base* card) const

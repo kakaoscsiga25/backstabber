@@ -29,7 +29,7 @@ public:
     int bonus;
     int price;
     ItemType type;
-    bool activated = false; // on the table
+    volatile bool activated = false; // on the table
     bool bigSize;
 
     Class::ClassType canUsedBy;
